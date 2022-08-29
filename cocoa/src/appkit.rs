@@ -14,6 +14,7 @@ use block::Block;
 use foundation::{NSInteger, NSUInteger, NSTimeInterval,
                  NSPoint, NSSize, NSRect, NSRange, NSRectEdge};
 use libc;
+use objc2::runtime::Bool;
 
 pub use core_graphics::base::CGFloat;
 pub use core_graphics::geometry::CGPoint;
@@ -3251,7 +3252,7 @@ pub trait NSImage: Sized {
     unsafe fn initWithPasteboard_(self, pasteboard: id /* (NSPasteboard *) */) -> id;
     unsafe fn initWithSize_flipped_drawingHandler_(self, size: NSSize,
                                                    drawingHandlerShouldBeCalledWithFlippedContext: BOOL,
-                                                   drawingHandler: *mut Block<(NSRect,), BOOL>);
+                                                   drawingHandler: *mut Block<(NSRect,), Bool>);
     unsafe fn initWithSize_(self, aSize: NSSize) -> id;
 
     unsafe fn imageNamed_(_: Self, name: id /* (NSString *) */) -> id {
@@ -3345,7 +3346,7 @@ impl NSImage for id {
 
     unsafe fn initWithSize_flipped_drawingHandler_(self, size: NSSize,
                                                    drawingHandlerShouldBeCalledWithFlippedContext: BOOL,
-                                                   drawingHandler: *mut Block<(NSRect,), BOOL>) {
+                                                   drawingHandler: *mut Block<(NSRect,), Bool>) {
         msg_send![self, initWithSize:size
                              flipped:drawingHandlerShouldBeCalledWithFlippedContext
                       drawingHandler:drawingHandler]

@@ -14,6 +14,7 @@ use std::os::raw::c_void;
 use base::{id, BOOL, NO, SEL, nil};
 use block::Block;
 use libc;
+use objc2::runtime::Bool;
 use objc2_encode::{Encode, Encoding, RefEncode};
 
 
@@ -368,17 +369,17 @@ pub trait NSDictionary: Sized {
 
     unsafe fn keyEnumerator(self) -> id;
     unsafe fn objectEnumerator(self) -> id;
-    unsafe fn enumerateKeysAndObjectsUsingBlock_(self, block: *mut Block<(id, id, *mut BOOL), ()>);
+    unsafe fn enumerateKeysAndObjectsUsingBlock_(self, block: *mut Block<(id, id, *mut Bool), ()>);
     unsafe fn enumerateKeysAndObjectsWithOptions_usingBlock_(self, opts: NSEnumerationOptions,
-                                                             block: *mut Block<(id, id, *mut BOOL), ()>);
+                                                             block: *mut Block<(id, id, *mut Bool), ()>);
 
     unsafe fn keysSortedByValueUsingSelector_(self, comparator: SEL) -> id;
     unsafe fn keysSortedByValueUsingComparator_(self, cmptr: NSComparator) -> id;
     unsafe fn keysSortedByValueWithOptions_usingComparator_(self, opts: NSEnumerationOptions, cmptr: NSComparator) -> id;
 
-    unsafe fn keysOfEntriesPassingTest_(self, predicate: *mut Block<(id, id, *mut BOOL), BOOL>) -> id;
+    unsafe fn keysOfEntriesPassingTest_(self, predicate: *mut Block<(id, id, *mut Bool), Bool>) -> id;
     unsafe fn keysOfEntriesWithOptions_PassingTest_(self, opts: NSEnumerationOptions,
-                                                    predicate: *mut Block<(id, id, *mut BOOL), BOOL>) -> id;
+                                                    predicate: *mut Block<(id, id, *mut Bool), Bool>) -> id;
 
     unsafe fn writeToFile_atomically_(self, path: id, flag: BOOL) -> BOOL;
     unsafe fn writeToURL_atomically_(self, aURL: id, flag: BOOL) -> BOOL;
@@ -481,12 +482,12 @@ impl NSDictionary for id {
         msg_send![self, objectEnumerator]
     }
 
-    unsafe fn enumerateKeysAndObjectsUsingBlock_(self, block: *mut Block<(id, id, *mut BOOL), ()>) {
+    unsafe fn enumerateKeysAndObjectsUsingBlock_(self, block: *mut Block<(id, id, *mut Bool), ()>) {
         msg_send![self, enumerateKeysAndObjectsUsingBlock:block]
     }
 
     unsafe fn enumerateKeysAndObjectsWithOptions_usingBlock_(self, opts: NSEnumerationOptions,
-                                                     block: *mut Block<(id, id, *mut BOOL), ()>) {
+                                                     block: *mut Block<(id, id, *mut Bool), ()>) {
         msg_send![self, enumerateKeysAndObjectsWithOptions:opts usingBlock:block]
     }
 
@@ -503,12 +504,12 @@ impl NSDictionary for id {
         rv
     }
 
-    unsafe fn keysOfEntriesPassingTest_(self, predicate: *mut Block<(id, id, *mut BOOL), BOOL>) -> id {
+    unsafe fn keysOfEntriesPassingTest_(self, predicate: *mut Block<(id, id, *mut Bool), Bool>) -> id {
         msg_send![self, keysOfEntriesPassingTest:predicate]
     }
 
     unsafe fn keysOfEntriesWithOptions_PassingTest_(self, opts: NSEnumerationOptions,
-                                                    predicate: *mut Block<(id, id, *mut BOOL), BOOL>) -> id {
+                                                    predicate: *mut Block<(id, id, *mut Bool), Bool>) -> id {
         msg_send![self, keysOfEntriesWithOptions:opts PassingTest:predicate]
     }
 
@@ -832,8 +833,8 @@ pub trait NSURL: Sized {
     unsafe fn initFileURLWithPath_(self, path: id) -> id;
     unsafe fn fileURLWithPathComponents_(_:Self, path_components: id /* (NSArray<NSString*>*) */) -> id;
     unsafe fn URLByResolvingAliasFileAtURL_options_error_(_:Self, url: id, options: NSURLBookmarkResolutionOptions, error: *mut id /* (NSError _Nullable) */) -> id;
-    unsafe fn URLByResolvingBookmarkData_options_relativeToURL_bookmarkDataIsStale_error_(_:Self, data: id /* (NSData) */, options: NSURLBookmarkResolutionOptions, relative_to_url: id, is_stale: *mut BOOL, error: *mut id /* (NSError _Nullable) */) -> id;
-    unsafe fn initByResolvingBookmarkData_options_relativeToURL_bookmarkDataIsStale_error_(self, data: id /* (NSData) */, options: NSURLBookmarkResolutionOptions, relative_to_url: id, is_stale: *mut BOOL, error: *mut id /* (NSError _Nullable) */) -> id;
+    unsafe fn URLByResolvingBookmarkData_options_relativeToURL_bookmarkDataIsStale_error_(_:Self, data: id /* (NSData) */, options: NSURLBookmarkResolutionOptions, relative_to_url: id, is_stale: *mut Bool, error: *mut id /* (NSError _Nullable) */) -> id;
+    unsafe fn initByResolvingBookmarkData_options_relativeToURL_bookmarkDataIsStale_error_(self, data: id /* (NSData) */, options: NSURLBookmarkResolutionOptions, relative_to_url: id, is_stale: *mut Bool, error: *mut id /* (NSError _Nullable) */) -> id;
     // unsafe fn fileURLWithFileSystemRepresentation_isDirectory_relativeToURL_
     // unsafe fn getFileSystemRepresentation_maxLength_
     // unsafe fn initFileURLWithFileSystemRepresentation_isDirectory_relativeToURL_
@@ -955,10 +956,10 @@ impl NSURL for id {
     unsafe fn URLByResolvingAliasFileAtURL_options_error_(_:Self, url: id, options: NSURLBookmarkResolutionOptions, error: *mut id /* (NSError _Nullable) */) -> id {
         msg_send![class!(NSURL), URLByResolvingAliasFileAtURL:url options:options error:error]
     }
-    unsafe fn URLByResolvingBookmarkData_options_relativeToURL_bookmarkDataIsStale_error_(_:Self, data: id /* (NSData) */, options: NSURLBookmarkResolutionOptions, relative_to_url: id, is_stale: *mut BOOL, error: *mut id /* (NSError _Nullable) */) -> id {
+    unsafe fn URLByResolvingBookmarkData_options_relativeToURL_bookmarkDataIsStale_error_(_:Self, data: id /* (NSData) */, options: NSURLBookmarkResolutionOptions, relative_to_url: id, is_stale: *mut Bool, error: *mut id /* (NSError _Nullable) */) -> id {
         msg_send![class!(NSURL), URLByResolvingBookmarkData:data options:options relativeToURL:relative_to_url bookmarkDataIsStale:is_stale error:error]
     }
-    unsafe fn initByResolvingBookmarkData_options_relativeToURL_bookmarkDataIsStale_error_(self, data: id /* (NSData) */, options: NSURLBookmarkResolutionOptions, relative_to_url: id, is_stale: *mut BOOL, error: *mut id /* (NSError _Nullable) */) -> id {
+    unsafe fn initByResolvingBookmarkData_options_relativeToURL_bookmarkDataIsStale_error_(self, data: id /* (NSData) */, options: NSURLBookmarkResolutionOptions, relative_to_url: id, is_stale: *mut Bool, error: *mut id /* (NSError _Nullable) */) -> id {
         msg_send![self, initByResolvingBookmarkData:data options:options relativeToURL:relative_to_url bookmarkDataIsStale:is_stale error:error]
     }
     // unsafe fn fileURLWithFileSystemRepresentation_isDirectory_relativeToURL_
@@ -1226,7 +1227,7 @@ pub trait NSData: Sized {
 
     unsafe fn bytes(self) -> *const c_void;
     unsafe fn description(self) -> id;
-    unsafe fn enumerateByteRangesUsingBlock_(self, block: *mut Block<(*const c_void, NSRange, *mut BOOL), ()>);
+    unsafe fn enumerateByteRangesUsingBlock_(self, block: *mut Block<(*const c_void, NSRange, *mut Bool), ()>);
     unsafe fn getBytes_length_(self, buffer: *mut c_void, length: NSUInteger);
     unsafe fn getBytes_range_(self, buffer: *mut c_void, range: NSRange);
     unsafe fn subdataWithRange_(self, range: NSRange) -> id;
@@ -1305,7 +1306,7 @@ impl NSData for id {
         msg_send![self, description]
     }
 
-    unsafe fn enumerateByteRangesUsingBlock_(self, block: *mut Block<(*const c_void, NSRange, *mut BOOL), ()>) {
+    unsafe fn enumerateByteRangesUsingBlock_(self, block: *mut Block<(*const c_void, NSRange, *mut Bool), ()>) {
         msg_send![self, enumerateByteRangesUsingBlock:block]
     }
 
