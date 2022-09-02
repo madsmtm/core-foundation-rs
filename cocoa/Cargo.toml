@@ -19,5 +19,5 @@ cocoa-foundation = { path = "../cocoa-foundation", version = "0.1" }
 core-foundation = { path = "../core-foundation", version = "0.9" }
 core-graphics = { path = "../core-graphics", version = "0.22" }
 foreign-types = "0.3"
-objc2 = { version = "=0.3.0-beta.2" }
+objc2 = { version = "=0.3.0-beta.3" }
 objc2-encode = { version = "=2.0.0-pre.2" }
